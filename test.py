@@ -7,14 +7,30 @@ G = np.array([
 ])
 
 h = [1,2,3]
-u = [0,0,0,1,1,1]
+u = [-6,-13,-9,0,0,0]
 basis = [3,4,5]
 
 np.set_printoptions(linewidth=100,precision=3)
-S = Simplex(G=G, u=u, h=h, basis=np.array(basis))
-# S.PickingEnteringVar()
-# S.SwappingLeavingEnteringVar(leaving=0,entering=3)
-# entering = S.PickingEnteringVar()
-# leaving = S.PickLeavingVar(entering)
-S.Optimize()
-print("Final Basis: ", S.basis)
+
+S = Simplex(G, h, u, basis=np.array(basis), initialSum=-6, isFirst=True)
+print("Current Entering Var: ", S.EnteringVar())
+print("Current Leaving Var: ", S.LeavingVar(S.EnteringVar()))
+S.BasisChange(3, 1)
+print("Current Entering Var: ", S.EnteringVar())
+print("Current Leaving Var: ", S.LeavingVar(S.EnteringVar()))
+S.BasisChange(5, 0)
+print("Current Entering Var: ", S.EnteringVar())
+print("Current Leaving Var: ", S.LeavingVar(S.EnteringVar()))
+S.BasisChange(4, 2)
+print("Current Entering Var: ", S.EnteringVar())
+
+
+Mat = np.array([
+    [1,7,8],
+    [2,1,0],
+    [3,5,1],
+])
+U_new = [3,4,5]
+H_Mat = [1,2,3]
+
+S_new = Simplex(Mat,H_Mat,H_Mat)
