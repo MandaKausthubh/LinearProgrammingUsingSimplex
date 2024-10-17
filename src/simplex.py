@@ -34,6 +34,24 @@ class Simplex:
             print("Final Matrix:")
             print(InitialBFS.Tableau)
             print(InitialBFS.basis)
+            self.basis = InitialBFS.basis
+
+            # Now setting up the required Matrix
+            for i in range(c):
+                for j in range(d):
+                    self.Tableau[i][j] = InitialBFS.Tableau[i][j]
+            for i in range(c):
+                self.Tableau[i][-1] = InitialBFS.Tableau[i][-1]
+
+            for i in range(d):
+                self.Tableau[-1][i] = Weights[i]
+
+            for i in range(c):
+                self.Tableau[-1] -= self.Tableau[i] * self.Tableau[-1][self.basis[i]]
+
+            print("Initial Tableau:")
+            print(self.Tableau)
+            print(self.basis)
 
 
         # For initial BFS
@@ -55,9 +73,11 @@ class Simplex:
         index = -1
         for i in range(self.d):
             if i not in self.basis and self.Tableau[-1][i] <= 0:
+                print(i,end=' ')
                 if index == -1:
                     index = i
-                index = i if self.Tableau[-1][index] > self.Tableau[-1][i] else index
+                index = i if self.Tableau[-1][index] >= self.Tableau[-1][i] else index
+        print()
         return index
 
     def LeavingVar(self, entering):
@@ -107,4 +127,11 @@ class Simplex:
         print("Entering Var:", entering)
         self.BasisChange(leaving, entering)
         self.LinearOptimize()
-        pass
+
+
+
+
+
+
+
+
